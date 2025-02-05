@@ -4,9 +4,9 @@ from datetime import datetime, timedelta, UTC
 from dotenv import load_dotenv
 import os
 
-from transform_data import transform_data
-from fetch_data import fetch_data
-from store_data import store_data
+from helpers.transform_data import transform_data
+from helpers.fetch_data import fetch_data
+from helpers.store_data import store_data
 
 load_dotenv()
 
