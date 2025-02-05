@@ -1,7 +1,7 @@
 import requests
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone, timedelta
 
-def fetch_air_quality_data(lat, lon, api_key):
+def fetch_data(lat, lon, api_key):
     url = f"http://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={api_key}"
     response = requests.get(url)
 
@@ -13,10 +13,19 @@ def fetch_air_quality_data(lat, lon, api_key):
         IST = timezone(timedelta(hours=5, minutes=30))
         timestamp = datetime.fromtimestamp(dt, IST)
 
+        pm25 = components['pm2_5']
+        pm10 = components['pm10']
+        so2 = components['so2']
+        no2 = components['no2']
+        nh3 = components['nh3']
+
         return {
             "timestamp": timestamp.isoformat(),
-            "components": components
+            "pm25": pm25,
+            "pm10": pm10,
+            "so2": so2,
+            "no2": no2,
+            "nh3": nh3
         }
     else:
         return {"error": "Error fetching data"}
-
