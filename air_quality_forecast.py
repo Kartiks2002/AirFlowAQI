@@ -1,5 +1,5 @@
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 import requests
 
@@ -11,7 +11,7 @@ def calculate_aqi(pollutant_value, breakpoints):
             aqi = (breakpoint[3] - breakpoint[2]) / (breakpoint[1] - breakpoint[0]) * (
                         pollutant_value - breakpoint[0]) + breakpoint[2]
             return round(aqi)
-    return None
+    return 0
 
 
 # Function to get air quality data and calculate AQI
@@ -50,12 +50,12 @@ def get_air_quality_data(lat, lon, api_key):
         overall_aqi = max(pm25_aqi, pm10_aqi, o3_aqi, so2_aqi, no2_aqi, co_aqi)
 
         return {
-            # "pm25_aqi": pm25_aqi,
-            # "pm10_aqi": pm10_aqi,
-            # "o3_aqi": o3_aqi,
-            # "so2_aqi": so2_aqi,
-            # "no2_aqi": no2_aqi,
-            # "co_aqi": co_aqi,
+            "pm25_aqi": pm25_aqi,
+            "pm10_aqi": pm10_aqi,
+            "o3_aqi": o3_aqi,
+            "so2_aqi": so2_aqi,
+            "no2_aqi": no2_aqi,
+            "co_aqi": co_aqi,
             "overall_aqi": overall_aqi
         }
     else:
@@ -64,10 +64,11 @@ def get_air_quality_data(lat, lon, api_key):
 
 # Airflow default arguments
 default_args = {
-    'owner': 'airflow',
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5),
-    'start_date': datetime(2025, 2, 3),  # Set the start date to when you want the job to start
+    "owner": "airflow",
+    "depends_on_past": False,
+    "start_date": datetime(2025, 2, 1),
+    "retries": 1,
+    "retry_delay": timedelta(minutes=5),  # Set the start date to when you want the job to start
 }
 
 # Define the DAG
@@ -75,14 +76,14 @@ dag = DAG(
     'air_quality_forecast',  # DAG name
     default_args=default_args,
     description='A simple DAG to fetch air quality data every hour',
-    schedule_interval=timedelta(hours=1),  # Schedule the DAG to run every hour
+    schedule_interval="@hourly",  # Schedule the DAG to run every hour
 )
 
 # Task to get air quality data and process it
 fetch_air_quality_task = PythonOperator(
     task_id='fetch_air_quality_data',
     python_callable=get_air_quality_data,
-    op_args=[18.5204, 73.8567, 'your_api_key_here'],  # Example: Pune coordinates and API key
+    op_args=[18.5204, 73.8567, '01ab2a8e148f687fc8a8f2444ba42748'],  # Example: Pune coordinates and API key
     dag=dag,
 )
 
