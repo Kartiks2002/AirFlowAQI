@@ -20,4 +20,4 @@ def transform_weather_data(**kwargs):
 
     # Pass the complete weather data, with transformations, forward
     ti.xcom_push(key='transformed_weather_data', value=weather_data)
-    # return weather_data
+    return weather_data

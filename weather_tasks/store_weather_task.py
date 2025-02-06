@@ -3,7 +3,7 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 def store_weather_data(**kwargs):
     # Pull the transformed weather data from XCom
     ti = kwargs['ti']
-    transformed_data = ti.xcom_pull(task_ids='transform_weather_data', key='transformed_weather_data')
+    transformed_data = ti.xcom_pull(task_ids='transform_weather_task', key='transformed_weather_data')
 
     if not transformed_data:
         raise ValueError("No transformed weather data found.")

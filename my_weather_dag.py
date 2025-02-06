@@ -13,7 +13,7 @@ load_dotenv()
 # Define the DAG
 with DAG(
     dag_id='my_weather_dag',
-    schedule_interval='*/10 * * * *',  # Adjust schedule as needed
+    schedule_interval='*/10 * * * *', 
     start_date=days_ago(1),
     catchup=False,
 ) as dag:
@@ -44,4 +44,4 @@ with DAG(
     )
 
     # Task dependencies
-    fetch_weather_task >> transform_weather_task >> store_weather_task # 2:00
+    fetch_weather_task >> transform_weather_task >> store_weather_task
