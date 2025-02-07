@@ -1,0 +1,28 @@
+ CREATE TABLE weather_data (
+    id SERIAL PRIMARY KEY,  -- Auto-incrementing ID for each entry
+    longitude DECIMAL(10, 4),  -- For storing the longitude
+    latitude DECIMAL(10, 4),   -- For storing the latitude
+    weather_main VARCHAR(50),  -- Main weather condition (e.g., Clear, Rain)
+    weather_description VARCHAR(255),  -- Description of the weather (e.g., clear sky)
+    temperature_kelvin DECIMAL(6, 2),  -- Temperature in Kelvin
+    feels_like_kelvin DECIMAL(6, 2),  -- Feels-like temperature in Kelvin
+    temp_min_kelvin DECIMAL(6, 2),  -- Minimum temperature in Kelvin
+    temp_max_kelvin DECIMAL(6, 2),  -- Maximum temperature in Kelvin
+    pressure INT,  -- Atmospheric pressure
+    humidity INT,  -- Humidity percentage
+    visibility INT,  -- Visibility in meters
+    wind_speed DECIMAL(5, 2),  -- Wind speed in meters/second
+    wind_deg INT,  -- Wind direction in degrees
+    wind_gust DECIMAL(5, 2),  -- Wind gust speed in meters/second
+    clouds INT,  -- Cloud coverage percentage
+    timestamp BIGINT,  -- UNIX timestamp
+    city VARCHAR(100),  -- City name
+    country CHAR(2),  -- Country code
+    sunrise BIGINT,  -- Sunrise time in UNIX timestamp
+    sunset BIGINT,  -- Sunset time in UNIX timestamp
+    temperature_celsius DECIMAL(5, 2),  -- Temperature in Celsius
+    feels_like_celsius DECIMAL(5, 2),  -- Feels-like temperature in Celsius
+    temp_min_celsius DECIMAL(5, 2),  -- Minimum temperature in Celsius
+    temp_max_celsius DECIMAL(5, 2),  -- Maximum temperature in Celsius
+    timestamp_ist TIMESTAMP  -- Timestamp in IST (Indian Standard Time)
+);
