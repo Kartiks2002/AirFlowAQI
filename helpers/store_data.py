@@ -14,7 +14,7 @@ def store_data(**kwargs):
     aqi = data["aqi"]
     
     
-    postgres_hook = PostgresHook(postgres_conn_id="postgres_airflowaqi")
+    postgres_hook = PostgresHook(postgres_conn_id="my_postgres_connection")
     conn = postgres_hook.get_conn()
     cursor = conn.cursor()
 
