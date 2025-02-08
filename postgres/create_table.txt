@@ -44,3 +44,6 @@ CREATE TABLE IF NOT EXISTS aqi_data (
     timestamp BIGINT NOT NULL,
     timestamp_ist TIMESTAMP NOT NULL
 );
+
+ALTER TABLE weather_data
+  ALTER COLUMN timestamp_ist TYPE TIMESTAMP WITH TIME ZONE USING timestamp_ist AT TIME ZONE 'Asia/Kolkata';
