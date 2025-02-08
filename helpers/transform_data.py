@@ -31,8 +31,9 @@ def transform_data(**kwargs):
     nh3_aqi = calculate_aqi(nh3, nh3_breakpoints)
 
     overall_aqi = max(pm25_aqi, pm10_aqi, no2_aqi, so2_aqi, nh3_aqi)
+    overall_aqi = 100 + (overall_aqi - 100)/300 * 50
 
     return {
         "timestamp": data["timestamp"],
-        "aqi": overall_aqi
+        "aqi": round(overall_aqi)
     }
