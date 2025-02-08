@@ -26,3 +26,20 @@
     temp_max_celsius DECIMAL(5, 2),  -- Maximum temperature in Celsius
     timestamp_ist TIMESTAMP  -- Timestamp in IST (Indian Standard Time)
 );
+
+ CREATE TABLE IF NOT EXISTS aqi_data (
+    id SERIAL PRIMARY KEY,
+    longitude FLOAT NOT NULL,
+    latitude FLOAT NOT NULL,
+    aqi INTEGER NOT NULL,
+    co FLOAT,
+    no FLOAT,
+    no2 FLOAT,
+    o3 FLOAT,
+    so2 FLOAT,
+    pm2_5 FLOAT,
+    pm10 FLOAT,
+    nh3 FLOAT,
+    timestamp BIGINT NOT NULL,
+    timestamp_ist TIMESTAMP NOT NULL
+);
