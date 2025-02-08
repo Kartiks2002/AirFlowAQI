@@ -27,11 +27,12 @@
     timestamp_ist TIMESTAMP  -- Timestamp in IST (Indian Standard Time)
 );
 
- CREATE TABLE IF NOT EXISTS aqi_data (
+CREATE TABLE IF NOT EXISTS aqi_data (
     id SERIAL PRIMARY KEY,
     longitude FLOAT NOT NULL,
     latitude FLOAT NOT NULL,
     aqi INTEGER NOT NULL,
+    aqi_category VARCHAR(50),
     co FLOAT,
     no FLOAT,
     no2 FLOAT,
