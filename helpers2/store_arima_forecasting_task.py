@@ -16,6 +16,11 @@ def store_arima_forecasting(**kwargs):
         conn = postgres_hook.get_conn()
         cursor = conn.cursor()
 
+        # Truncate the table before inserting new data
+        truncate_query = "TRUNCATE TABLE aqi_forecast_data"
+        cursor.execute(truncate_query)
+        print("Table truncated successfully.")
+
         # Insert forecasted data into the PostgreSQL table
         insert_query = "INSERT INTO aqi_forecast_data (timestamp, forecast_aqi) VALUES (%s, %s)"
         
