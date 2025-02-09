@@ -144,13 +144,11 @@ Project Structure
 └── README.md                 # Project documentation
 ```
 ### Screenshots
-Airflow DAG: [Include screenshots here]
-Grafana Dashboard: [Include screenshots here]
+pending
 
 ### Future Enhancements
-Integrate additional data sources for more accurate AQI forecasting.
-Improve the forecasting model (e.g., testing LSTM for time series predictions).
-Add a notification system (email/SMS) for alerts when AQI crosses critical levels.
+Integrate additional data sources for more accurate AQI forecasting.<br>
+Improve the forecasting model (e.g., testing LSTM for time series predictions).<br>
+Add a notification system (email/SMS) for alerts when AQI crosses critical levels.<br>
 
-### License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
