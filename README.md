@@ -18,7 +18,6 @@ A pipeline for forecasting air quality (AQI) using Airflow, OpenWeather API, Pos
 - [Project Structure](#project-structure)
 - [Screenshots](#screenshots)
 - [Future Enhancements](#future-enhancements)
-- [License](#license)
 
 ## Overview
 
