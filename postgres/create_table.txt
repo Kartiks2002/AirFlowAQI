@@ -1,3 +1,9 @@
+CREATE TABLE aqi_forecast_data (
+    id serial PRIMARY KEY,
+    timestamp timestamp with time zone NOT NULL,
+    forecast_aqi double precision NOT NULL
+);
+
 CREATE TEMP TABLE aqi_data_temp (
     id SERIAL PRIMARY KEY,
     longitude DOUBLE PRECISION NOT NULL,
