@@ -143,6 +143,12 @@ Project Structure
 └── README.md                 # Project documentation
 ```
 ### Screenshots
+#### AQI Dag
+![image](https://github.com/user-attachments/assets/61d1ff1b-47e4-417a-8583-76cf53736c0e)
+
+#### Weather Dag
+
+#### Grafana Dashboard
 ![Screenshot (1)](https://github.com/user-attachments/assets/51e0aa60-b243-404c-b0a8-b12d332b219c)
 
 
