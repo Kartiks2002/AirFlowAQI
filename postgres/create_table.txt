@@ -1,4 +1,44 @@
- CREATE TABLE weather_data (
+CREATE TEMP TABLE aqi_data_temp (
+    id SERIAL PRIMARY KEY,
+    longitude DOUBLE PRECISION NOT NULL,
+    latitude DOUBLE PRECISION NOT NULL,
+    aqi INTEGER NOT NULL,
+    pm2_5 DOUBLE PRECISION,
+    pm10 DOUBLE PRECISION,
+    no2 DOUBLE PRECISION,
+    o3 DOUBLE PRECISION,
+    co DOUBLE PRECISION,
+    so2 DOUBLE PRECISION,
+    nh3 DOUBLE PRECISION,
+    no DOUBLE PRECISION,
+    timestamp TIMESTAMPTZ NOT NULL
+);
+
+DO $$ 
+DECLARE 
+    ts TIMESTAMPTZ := NOW() - INTERVAL '60 hours'; 
+    end_ts TIMESTAMPTZ := NOW();
+BEGIN 
+    WHILE ts <= end_ts LOOP
+        INSERT INTO aqi_data_temp (longitude, latitude, aqi, pm2_5, pm10, no2, o3, co, so2, nh3, no, timestamp) 
+        VALUES (
+            73.8567, 18.5204,
+            80 + floor(random() * 81)::INT,    -- AQI between 80-160 (INTEGER)
+            round((random() * 3)::NUMERIC, 2), -- PM2.5 between 0-3 (FLOAT, rounded)
+            round((random() * 3)::NUMERIC, 2), -- PM10 between 0-3 (FLOAT, rounded)
+            round((6 + random() * 19)::NUMERIC, 2),  -- NO2 between 6-25
+            round((30 + random() * 90)::NUMERIC, 2), -- O3 between 30-120
+            round((1000 + random() * 400)::NUMERIC, 2), -- CO between 1000-1400
+            round((5 + random() * 20)::NUMERIC, 2),  -- SO2 between 5-25
+            round((5 + random() * 20)::NUMERIC, 2),  -- NH3 between 5-25
+            0, -- NO constant (INTEGER)
+            ts
+        );
+        ts := ts + INTERVAL '1 hour';
+    END LOOP;
+END $$;
+
+CREATE TABLE weather_data (
     id SERIAL PRIMARY KEY,  -- Auto-incrementing ID for each entry
     longitude DECIMAL(10, 4),  -- For storing the longitude
     latitude DECIMAL(10, 4),   -- For storing the latitude
