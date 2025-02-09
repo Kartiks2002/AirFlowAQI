@@ -143,7 +143,9 @@ Project Structure
 └── README.md                 # Project documentation
 ```
 ### Screenshots
-pending
+![Screenshot (1)](https://github.com/user-attachments/assets/51e0aa60-b243-404c-b0a8-b12d332b219c)
+
+
 
 ### Future Enhancements
 Integrate additional data sources for more accurate AQI forecasting.<br>
