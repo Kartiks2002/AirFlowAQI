@@ -1,10 +1,6 @@
 # AirFlowAQI
 A pipeline for forecasting air quality (AQI) using Airflow, OpenWeather API, PostgreSQL, and Grafana for real-time data collection, storage, and visualization.
 
-# Air Quality Forecasting Pipeline
-
-A pipeline for forecasting air quality (AQI) using **Airflow**, **OpenWeather API**, **PostgreSQL**, and **Grafana** for real-time data collection, storage, and visualization.
-
 ## Table of Contents
 
 - [Overview](#overview)
@@ -63,7 +59,7 @@ The DAG (`air_quality_final`) consists of the following tasks:
 3. **`store_data_task`**: Stores the transformed data in PostgreSQL.
 4. **`fetch_last_two_days_data_task`**: Fetches the last two days of AQI data for forecasting.
 5. **`apply_arima_forecasting_task`**: Applies ARIMA forecasting on the past data.
-6. **`store_arima_forecasting_task`**: Stores the forecasted AQI values into PostgreSQL after truncating the table.
+6. **`store_arima_forecasting_task`**: Stores the forecasted AQI values into PostgreSQL.
 
 ## Setup Instructions
 
@@ -72,13 +68,15 @@ The DAG (`air_quality_final`) consists of the following tasks:
 ```bash
 git clone https://github.com/your-username/airflow-aqi-forecast.git
 cd airflow-aqi-forecast
-2. Setup PostgreSQL Database
+```
+
+### 2. Setup PostgreSQL Database
 Install PostgreSQL.
 Create a new database:
-bash
-Copy
-Edit
+```bash
 sudo -u postgres psql
+```
+```sql
 CREATE DATABASE aqi_db;
 \c aqi_db
 CREATE TABLE aqi_data (
@@ -104,42 +102,38 @@ CREATE TABLE aqi_forecast_data (
     timestamp TIMESTAMP,
     forecast_aqi INT
 );
-3. Setup Airflow
+```
+
+### 3. Setup Airflow
 Install Airflow and required dependencies:
-bash
-Copy
-Edit
+```bash
 pip install apache-airflow
 pip install apache-airflow-providers-postgres
+```
 Configure your Airflow airflow.cfg file to include PostgreSQL and OpenWeather connections.
 Set up a PostgreSQL connection in Airflow with postgres_conn_id = "my_postgres_connection".
-4. Configure OpenWeather API
+### 4. Configure OpenWeather API
 Sign up for an OpenWeather API key here.
 Update your Airflow DAG configuration with your API key.
-python
-Copy
-Edit
+```python
 API_KEY = 'your_openweather_api_key'
-5. Configure Grafana
+```
+### 5. Configure Grafana
 Install Grafana and connect it to your PostgreSQL database.
 Set up a dashboard to visualize AQI data and predictions.
-6. Initialize and Run Airflow
+### 6. Initialize and Run Airflow
 Initialize Airflow’s database:
-bash
-Copy
-Edit
+```bash
 airflow db init
+```
 Start the Airflow web server and scheduler:
-bash
-Copy
-Edit
+```bash
 airflow webserver --port 8080
 airflow scheduler
+```
 Trigger the air_quality_final DAG from the Airflow UI.
 Project Structure
-bash
-Copy
-Edit
+```bash
 .
 ├── dags/
 │   └── air_quality_final.py  # Airflow DAG for AQI pipeline
@@ -148,14 +142,15 @@ Edit
 ├── config/
 │   └── settings.py           # Configurations for API and database
 └── README.md                 # Project documentation
-Screenshots
-Airflow DAG
+```
+### Screenshots
+Airflow DAG: [Include screenshots here]
+Grafana Dashboard: [Include screenshots here]
 
-Grafana Dashboard
-
-Future Enhancements
+### Future Enhancements
 Integrate additional data sources for more accurate AQI forecasting.
 Improve the forecasting model (e.g., testing LSTM for time series predictions).
 Add a notification system (email/SMS) for alerts when AQI crosses critical levels.
-License
+
+### License
 This project is licensed under the MIT License - see the LICENSE file for details.
