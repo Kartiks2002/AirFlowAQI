@@ -143,6 +143,9 @@ Project Structure
 └── README.md                 # Project documentation
 ```
 ### Screenshots
+#### Flow
+![Screenshot 2025-02-10 010917](https://github.com/user-attachments/assets/71fa6c55-10a8-4d76-a196-2f1419e31805)
+
 #### AQI Dag
 ![image](https://github.com/user-attachments/assets/61d1ff1b-47e4-417a-8583-76cf53736c0e)
 
