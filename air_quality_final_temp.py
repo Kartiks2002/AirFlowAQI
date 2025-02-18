@@ -5,12 +5,12 @@ from dotenv import load_dotenv
 import os
 
 # Import helper functions from the correct paths
-from helpers2.transform_aqi_data_task import transform_data
-from helpers2.fetch_aqi_data_task import fetch_data
-from helpers2.store_data_task import store_data
-from helpers2.fetch_last_two_days_task import fetch_last_two_days_data
-from helpers2.apply_arima_forecasting_task import apply_arima_forecasting
-from helpers2.store_arima_forecasting_task import store_arima_forecasting
+from aqi_tasks.transform_aqi_data_task import transform_data
+from aqi_tasks.fetch_aqi_data_task import fetch_data
+from aqi_tasks.store_data_task import store_data
+from aqi_tasks.fetch_last_two_days_task import fetch_last_two_days_data
+from aqi_tasks.apply_arima_forecasting_task import apply_arima_forecasting
+from aqi_tasks.store_arima_forecasting_task import store_arima_forecasting
 
 # Load environment variables
 load_dotenv()
