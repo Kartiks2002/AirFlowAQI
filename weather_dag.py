@@ -12,7 +12,7 @@ load_dotenv()
 
 # Define the DAG
 with DAG(
-    dag_id='my_weather_dag',
+    dag_id='weather_dag',
     schedule_interval='*/10 * * * *', 
     start_date=days_ago(1),
     catchup=False,

@@ -18,20 +18,83 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 1,
   "links": [],
   "panels": [
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<h1 style=\"text-align: center; color: #00d4ff; font-size: 24px;\">AIR QUALITY & WEATHER DASHBOARD</h1>\n",
+        "mode": "html"
+      },
+      "pluginVersion": "11.5.1",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "feccdob1c5fy8d"
+        "uid": "aebdmlmrmz3swf"
       },
-      "description": "Pune",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 54,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 8,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -50,46 +113,39 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 6,
+        "h": 13,
+        "w": 24,
         "x": 0,
-        "y": 0
+        "y": 2
       },
-      "id": 1,
+      "id": 10,
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "p10"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "feccdob1c5fy8d"
-          },
-          "editorMode": "builder",
+          "editorMode": "code",
           "format": "table",
-          "rawSql": "SELECT longitude, latitude FROM weather_data LIMIT 50 ",
+          "rawQuery": true,
+          "rawSql": "SELECT \"timestamp\", aqi \nFROM aqi_data_temp \nWHERE $__timeFilter(timestamp)",
           "refId": "A",
           "sql": {
             "columns": [
               {
                 "parameters": [
                   {
-                    "name": "longitude",
+                    "name": "\"timestamp\"",
                     "type": "functionParameter"
                   }
                 ],
@@ -98,7 +154,75 @@
               {
                 "parameters": [
                   {
-                    "name": "latitude",
+                    "name": "aqi",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50,
+            "whereJsonTree": {
+              "children1": [
+                {
+                  "id": "8ab98888-cdef-4012-b456-7194e9eba6f1",
+                  "properties": {
+                    "field": "\"timestamp\"",
+                    "fieldSrc": "field",
+                    "operator": "equal",
+                    "value": [
+                      null
+                    ],
+                    "valueSrc": [
+                      "value"
+                    ],
+                    "valueType": [
+                      "datetime"
+                    ]
+                  },
+                  "type": "rule"
+                }
+              ],
+              "id": "8aab899a-0123-4456-b89a-b194e598c925",
+              "type": "group"
+            }
+          },
+          "table": "aqi_data_temp"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "aebdmlmrmz3swf"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT \"timestamp\", forecast_aqi\nFROM aqi_forecast_data \nWHERE $__timeFilter(timestamp)",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "\"timestamp\"",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [
+                  {
+                    "name": "forecast_aqi",
                     "type": "functionParameter"
                   }
                 ],
@@ -115,49 +239,63 @@
             ],
             "limit": 50
           },
-          "table": "weather_data"
-        },
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "feccdob1c5fy8d"
-          },
-          "editorMode": "builder",
-          "format": "table",
-          "hide": false,
-          "rawSql": "",
-          "refId": "B",
-          "table": "weather_data"
+          "table": "aqi_forecast_data"
         }
       ],
-      "title": "Location",
+      "title": "AQI",
       "transparent": true,
-      "type": "stat"
+      "type": "timeseries"
     },
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "aecclw65i1728d"
+        "uid": "aebdmlmrmz3swf"
       },
-      "description": "Display Average AQI for All parameters\n",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
-          "fieldMinMax": true,
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 1,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
-          "min": -1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -165,38 +303,36 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 10,
-        "x": 6,
-        "y": 0
+        "h": 10,
+        "w": 13,
+        "x": 0,
+        "y": 15
       },
-      "id": 4,
+      "id": 1,
       "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "vertical",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
             "type": "grafana-postgresql-datasource",
-            "uid": "aecclw65i1728d"
+            "uid": "aebdmlmrmz3swf"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \r\n  AVG(pm25_aqi)  as PM25, \r\n  AVG(pm10_aqi)  as PM10, \r\n  AVG(so2_aqi)  as SO2, \r\n  AVG(no2_aqi)  as NO2\r\nFROM aqi_data_new",
+          "rawSql": "SELECT timestamp_ist AS \"time\", \n       temperature_celsius AS \"Temperature (°C)\"\nFROM weather_data\nORDER BY timestamp_ist;\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -214,56 +350,51 @@
               }
             ],
             "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "aebdmlmrmz3swf"
           },
-          "table": "aqi_data_new"
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp_ist AS \"time\", \n       feels_like_celsius AS \"Feels Like (°C)\"\nFROM weather_data\nORDER BY timestamp_ist;",
+          "refId": "B",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
         }
       ],
-      "title": "Average AQI",
+      "title": "Temperature (PUNE)",
       "transparent": true,
-      "type": "gauge"
+      "type": "timeseries"
     },
     {
       "datasource": {
-        "uid": "aecclw65i1728d"
+        "type": "grafana-postgresql-datasource",
+        "uid": "aebdmlmrmz3swf"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-BlPu"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": false,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 59,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -274,8 +405,8 @@
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "#EAB839",
+                "value": 3
               }
             ]
           }
@@ -283,53 +414,41 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 8,
-        "x": 16,
-        "y": 0
+        "h": 4,
+        "w": 5,
+        "x": 13,
+        "y": 15
       },
       "id": 3,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "timezone": [
-          ""
-        ],
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
-          "editorMode": "builder",
+          "editorMode": "code",
           "format": "table",
-          "rawSql": "SELECT pm10_aqi, \"timestamp\" FROM aqi_data_new LIMIT 50 ",
+          "rawQuery": true,
+          "rawSql": "SELECT \n    MIN(wind_speed) AS \"Min Wind Speed(m/s)\", \n    MAX(wind_speed) AS \"Max Wind Speed(m/s)\"\nFROM weather_data\nWHERE $__timeFilter(timestamp_ist);",
           "refId": "A",
           "sql": {
             "columns": [
               {
-                "parameters": [
-                  {
-                    "name": "pm10_aqi",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "\"timestamp\"",
-                    "type": "functionParameter"
-                  }
-                ],
+                "parameters": [],
                 "type": "function"
               }
             ],
@@ -342,251 +461,22 @@
               }
             ],
             "limit": 50
-          },
-          "table": "aqi_data_new"
-        }
-      ],
-      "title": "pm10_AQI",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "aecclw65i1728d"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "orange",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": false,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 56,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "m3"
-        },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "nh3_aqi"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                }
-              }
-            ]
           }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 13,
-        "x": 0,
-        "y": 5
-      },
-      "id": 6,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.5.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "aecclw65i1728d"
-          },
-          "editorMode": "builder",
-          "format": "table",
-          "rawSql": "SELECT \"timestamp\", pm25_aqi, pm10_aqi, so2_aqi, no2_aqi, nh3_aqi FROM aqi_data_new LIMIT 50 ",
-          "refId": "A",
-          "sql": {
-            "columns": [
-              {
-                "parameters": [
-                  {
-                    "name": "\"timestamp\"",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "pm25_aqi",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "pm10_aqi",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "so2_aqi",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "no2_aqi",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "nh3_aqi",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
-                },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50
-          },
-          "table": "aqi_data_new"
         }
       ],
       "title": "",
       "transparent": true,
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "aecclw65i1728d"
+        "uid": "aebdmlmrmz3swf"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "orange",
-            "mode": "continuous-RdYlGr",
-            "seriesBy": "last"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "series",
-            "axisGridShow": false,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 38,
-            "gradientMode": "hue",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -597,64 +487,55 @@
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "#6ED0E0",
+                "value": 30
+              },
+              {
+                "color": "#EAB839",
+                "value": 60
               }
             ]
-          },
-          "unit": "celsius"
+          }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 11,
-        "x": 13,
-        "y": 6
+        "h": 4,
+        "w": 3,
+        "x": 18,
+        "y": 15
       },
       "id": 5,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "value_and_name",
+        "wideLayout": true
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "aecclw65i1728d"
-          },
-          "editorMode": "builder",
+          "editorMode": "code",
           "format": "table",
-          "rawSql": "SELECT timestamp_ist, temperature_celsius FROM weather_data LIMIT 50 ",
+          "rawQuery": true,
+          "rawSql": "SELECT \n    humidity AS \"Humidity (%)\",\n    timestamp_ist AS \"time\"\nFROM weather_data\nWHERE $__timeFilter(timestamp_ist)\nORDER BY timestamp_ist DESC\nLIMIT 1;\n",
           "refId": "A",
           "sql": {
             "columns": [
               {
-                "parameters": [
-                  {
-                    "name": "timestamp_ist",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "temperature_celsius",
-                    "type": "functionParameter"
-                  }
-                ],
+                "parameters": [],
                 "type": "function"
               }
             ],
@@ -667,60 +548,22 @@
               }
             ],
             "limit": 50
-          },
-          "table": "weather_data"
+          }
         }
       ],
-      "title": "Temperature",
+      "title": "",
       "transparent": true,
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "aecclw65i1728d"
+        "uid": "aebdmlmrmz3swf"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": false,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -731,8 +574,8 @@
                 "value": null
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "#EF843C",
+                "value": 900
               }
             ]
           }
@@ -740,108 +583,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 9,
-        "x": 0,
-        "y": 13
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 15
       },
-      "id": 2,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.5.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "aecclw65i1728d"
-          },
-          "editorMode": "builder",
-          "format": "table",
-          "rawSql": "SELECT timestamp_ist, pressure FROM weather_data LIMIT 50 ",
-          "refId": "A",
-          "sql": {
-            "columns": [
-              {
-                "parameters": [
-                  {
-                    "name": "timestamp_ist",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "pressure",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              }
-            ],
-            "groupBy": [
-              {
-                "property": {
-                  "type": "string"
-                },
-                "type": "groupBy"
-              }
-            ],
-            "limit": 50
-          },
-          "table": "weather_data"
-        }
-      ],
-      "title": "Pressure ",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-postgresql-datasource",
-        "uid": "aecclw65i1728d"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-BlPu"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 7,
-        "x": 9,
-        "y": 13
-      },
-      "id": 8,
+      "id": 6,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -862,32 +609,15 @@
       "pluginVersion": "11.5.1",
       "targets": [
         {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "aecclw65i1728d"
-          },
-          "editorMode": "builder",
+          "editorMode": "code",
           "format": "table",
-          "rawSql": "SELECT wind_speed, humidity FROM weather_data LIMIT 50 ",
+          "rawQuery": true,
+          "rawSql": "SELECT \n    pressure AS \"Pressure (hPa)\",\n    timestamp_ist AS \"time\"\nFROM weather_data\nWHERE $__timeFilter(timestamp_ist)\nORDER BY timestamp_ist DESC\nLIMIT 1;",
           "refId": "A",
           "sql": {
             "columns": [
               {
-                "parameters": [
-                  {
-                    "name": "wind_speed",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "humidity",
-                    "type": "functionParameter"
-                  }
-                ],
+                "parameters": [],
                 "type": "function"
               }
             ],
@@ -900,50 +630,396 @@
               }
             ],
             "limit": 50
-          },
-          "table": "weather_data"
+          }
         }
       ],
       "title": "",
+      "transparent": true,
       "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-postgresql-datasource",
-        "uid": "aecclw65i1728d"
+        "uid": "aebdmlmrmz3swf"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 13,
+        "y": 19
+      },
+      "id": 4,
+      "options": {
+        "cardinalLabels": "ordinal",
+        "colorPalette": "default",
+        "doesLegendOverlay": false,
+        "legendAnchor": "bottom",
+        "legendPosition": "right",
+        "petalsPer90Deg": 4,
+        "showLegend": false,
+        "speedBucketsCount": 8,
+        "speedBucketsSize": 2,
+        "speedBucketsSizeAuto": true,
+        "tooltipDecimalPlaces": 1,
+        "windSpeedUnit": "ms",
+        "windroseLabels": "compass"
+      },
+      "pluginVersion": "1.2.0",
+      "targets": [
+        {
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n    wind_speed AS \"wind_speed\",\n    wind_deg AS \"wind_direction\",\n    timestamp_ist AS \"time\"\nFROM weather_data\nWHERE $__timeFilter(timestamp_ist)\nORDER BY timestamp_ist DESC\nLIMIT 1;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Wind Direction",
+      "transparent": true,
+      "type": "operato-windrose-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "aebdmlmrmz3swf"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "#8967f4",
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 9,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 6
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 16,
+        "y": 19
+      },
+      "id": 2,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "/^Wind Speed \\(m/s\\)$/",
+          "limit": 1,
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT timestamp_ist AS \"time\", \n       wind_speed AS \"Wind Speed (m/s)\"\nFROM weather_data\nWHERE $__timeFilter(timestamp_ist)\nORDER BY timestamp_ist DESC;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Wind Speed (m/s)",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "aebdmlmrmz3swf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 150,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 20,
+        "y": 19
+      },
+      "id": 9,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^pm2_5$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    date_trunc('hour', timestamp_ist) AS time,  -- Truncating to the nearest hour\n    AVG(pm2_5) AS pm2_5\nFROM\n    aqi_data\nWHERE\n    $__timeFilter(timestamp_ist)  -- Grafana time filter\nGROUP BY\n    time\nORDER BY\n    time ASC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "pm2_5",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "aebdmlmrmz3swf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "fixed"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 13,
+        "x": 0,
+        "y": 25
+      },
+      "id": 12,
+      "options": {
+        "basemap": {
+          "config": {
+            "server": "custom",
+            "showLabels": true,
+            "theme": "dark"
+          },
+          "name": "Layer 0",
+          "opacity": 1,
+          "tooltip": true,
+          "type": "carto"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "blur": 12,
+              "radius": 11,
+              "weight": {
+                "fixed": 1,
+                "max": 1,
+                "min": 0
+              }
+            },
+            "name": "CurrAQI",
+            "opacity": 0.8,
+            "tooltip": true,
+            "type": "heatmap"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": 18.523012,
+          "lon": 73.868147,
+          "shared": true,
+          "zoom": 11.09
+        }
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT latitude, longitude, aqi\nFROM aqi_data_temp\nWHERE $__timeFilter(timestamp)\nORDER by timestamp DESC\nLIMIT 1;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "",
+      "transparent": true,
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "aebdmlmrmz3swf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisGridShow": false,
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 35,
+            "fillOpacity": 70,
+            "gradientMode": "hue",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineStyle": {
-              "fill": "solid"
-            },
             "lineWidth": 1,
-            "pointShape": "circle",
-            "pointSize": {
-              "fixed": 5
-            },
-            "pointStrokeWidth": 2,
             "scaleDistribution": {
               "type": "linear"
             },
-            "show": "points+lines"
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -963,77 +1039,46 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 8,
-        "x": 16,
-        "y": 13
+        "h": 11,
+        "w": 11,
+        "x": 13,
+        "y": 25
       },
-      "id": 7,
+      "id": 11,
       "options": {
+        "barRadius": 0,
+        "barWidth": 0.85,
+        "fullHighlight": false,
+        "groupWidth": 1,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
-        "mapping": "auto",
-        "series": [
-          {
-            "frame": {
-              "matcher": {
-                "id": "byIndex",
-                "options": 0
-              }
-            },
-            "x": {
-              "matcher": {
-                "id": "byName",
-                "options": "pm25_aqi"
-              }
-            },
-            "y": {
-              "matcher": {
-                "id": "byName",
-                "options": "pm10_aqi"
-              }
-            }
-          }
-        ],
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
         "tooltip": {
           "hideZeros": false,
-          "mode": "none",
+          "mode": "single",
           "sort": "none"
-        }
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
-          "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "aecclw65i1728d"
-          },
-          "editorMode": "builder",
+          "editorMode": "code",
           "format": "table",
-          "rawSql": "SELECT pm25_aqi, pm10_aqi FROM aqi_data_new LIMIT 50 ",
+          "rawQuery": true,
+          "rawSql": "SELECT\n    date_trunc('hour', timestamp_ist) AS time,  -- Truncating to the hour for grouping\n    AVG(pm2_5) AS pm2_5,\n    AVG(pm10) AS pm10,\n    AVG(no2) AS no2,\n    AVG(so2) AS so2\nFROM\n    aqi_data\nWHERE\n    $__timeFilter(timestamp_ist)  -- Grafana time filter\nGROUP BY\n    time\nORDER BY\n    time DESC\nLIMIT 1;",
           "refId": "A",
           "sql": {
             "columns": [
               {
-                "parameters": [
-                  {
-                    "name": "pm25_aqi",
-                    "type": "functionParameter"
-                  }
-                ],
-                "type": "function"
-              },
-              {
-                "parameters": [
-                  {
-                    "name": "pm10_aqi",
-                    "type": "functionParameter"
-                  }
-                ],
+                "parameters": [],
                 "type": "function"
               }
             ],
@@ -1046,30 +1091,29 @@
               }
             ],
             "limit": 50
-          },
-          "table": "aqi_data_new"
+          }
         }
       ],
-      "title": "PM25 VS PM10",
+      "title": "",
       "transparent": true,
-      "type": "xychart"
+      "type": "barchart"
     }
   ],
   "preload": false,
-  "refresh": "",
+  "refresh": "5m",
   "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "New dashboard",
-  "uid": "fecf1xh83kvlsb",
-  "version": 26,
+  "title": "Weather",
+  "uid": "becf1u26oor9ce",
+  "version": 59,
   "weekStart": ""
 }
