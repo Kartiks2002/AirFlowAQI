@@ -27,7 +27,7 @@ default_args = {
 
 # Define the DAG
 dag = DAG(
-    'air_quality_final_temp',
+    'air_quality_dag',
     default_args=default_args,
     description='A simple DAG to fetch air quality data every hour',
     schedule_interval="@hourly",
